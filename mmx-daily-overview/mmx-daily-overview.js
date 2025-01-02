@@ -108,8 +108,8 @@ async function initialize() {
 
         farmData["netspace"] = await getNetSpace();
         farmData["farmspace"] = await getFarmSpace();
-        // farmData["netspace"] = 113324309360000000;
-        // farmData["farmspace"] = 340942856626176;
+        // farmData["netspace"] = 2324309360000000;
+        // farmData["farmspace"] = 406942856626176;
 
         parseLog(logDate);
 
@@ -166,8 +166,8 @@ async function getFarmSpace() {
                 reject(err);
             } else {
                 const result = stdout.split("\n");
-                let total = result[3].split(" ");
-                resolve(total[6] * 1000000000000);
+                let total = result[0].split(" ");
+                resolve(total[3] * 1000000000000);
             }
         });
     });
