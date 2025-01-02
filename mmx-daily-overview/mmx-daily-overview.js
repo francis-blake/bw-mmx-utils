@@ -188,8 +188,8 @@ function createMessage() {
             message += "   - Current effort ⌛: " + getCurrentEffort() + "\n";
         }
     }
-    message += " - " + dummyBlocks + " Dummy blocks 💩\n";
-    message += "\n";
+    // message += " - " + dummyBlocks + " Dummy blocks 💩\n";
+    // message += "\n";
     message += "Search 🔎: \n";
     message += " - average: " + getEligibleAvgLookups();
     message += " - over 1s: " + getEligibleOver(1) + "\n";
@@ -320,6 +320,9 @@ function generateBlocksDetails() {
         });
 
         (showBlocksInfo) && (str += ")\n");
+        if (isNaN(allEfforts[0]))
+            allEfforts.shift();
+
         str += "   - Average effort: " + Math.round(allEfforts.reduce((partialSum, a) => partialSum + a, 0) / allEfforts.length) + "%";
 
         return str;
