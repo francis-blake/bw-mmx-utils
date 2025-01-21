@@ -15,7 +15,7 @@ if (!process.env.MMX_LOG_FOLDER || !process.env.MMX_FOLDER) {
 
 const mmx_log_folder = process.env.MMX_LOG_FOLDER;
 const mmxFolder = process.env.MMX_FOLDER;
-const mmxDailyOverviewFolder = process.env.MMX_DAILY_OVERVIEW_FOLDER;
+const thisFolder = process.env.THIS_FOLDER;
 
 const TelegramBot = require('node-telegram-bot-api');
 const { parse } = require("path");
@@ -146,7 +146,7 @@ function parseLog(lf, before = false) {
 async function getNetSpace() {
 
     return new Promise(function (resolve, reject) {
-        exec("cd " + mmxFolder + "; . ./activate.sh; " + mmxFolder + "/build/mmx node get netspace; cd " + mmxDailyOverviewFolder, function (err, stdout, stderr) {
+        exec("cd " + mmxFolder + "; . ./activate.sh; " + mmxFolder + "/build/mmx node get netspace; cd " + thisFolder + "/mmx-daily-overview", function (err, stdout, stderr) {
             if (err) {
                 console.error(err);
                 reject(err);
@@ -161,7 +161,7 @@ async function getNetSpace() {
 async function getFarmSpace() {
 
     return new Promise(function (resolve, reject) {
-        exec("cd " + mmxFolder + "; . ./activate.sh; " + mmxFolder + "/build/mmx farm info; cd " + mmxDailyOverviewFolder, function (err, stdout, stderr) {
+        exec("cd " + mmxFolder + "; . ./activate.sh; " + mmxFolder + "/build/mmx farm info; cd " + thisFolder + "/mmx-daily-overview", function (err, stdout, stderr) {
             if (err) {
                 console.error(err);
                 reject(err);
