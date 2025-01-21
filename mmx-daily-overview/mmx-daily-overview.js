@@ -179,7 +179,8 @@ function createMessage() {
     message = "🚜 *MMX Node Health Report* - " + logDate.replace(/_/g, "-") + "\n";
 
     message += "\n";
-    message += "*MMX earned* 💰: " + Math.round((rewards + fees) * 100) / 100 + " MMX\n";
+    // message += "*MMX earned* 💰: " + Math.round((rewards + fees) * 100) / 100 + " MMX\n";
+    message += "*MMX earned* 💰: " + Math.round((rewards) * 100) / 100 + " MMX\n"; // actually reward is the composed amount to the farmer (reward + its part of the fee)
     message += "Proofs 🧾: " + proofs + "\n";
     message += " - " + blocksCount + " *Created blocks* 🍀\n";
     if (blocks.length > 0) {
