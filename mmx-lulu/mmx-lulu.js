@@ -175,7 +175,7 @@ async function getNetSpace() {
                 reject(err);
             } else {
                 const result = stdout.split("\n");
-                resolve(result[2]);
+                resolve(result[3]);
             }
         });
     });
