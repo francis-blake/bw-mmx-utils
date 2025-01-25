@@ -146,7 +146,7 @@ function parseLog(lf, before = false) {
 async function getNetSpace() {
 
     return new Promise(function (resolve, reject) {
-        exec("cd " + mmxFolder + "; . ./activate.sh; " + mmxFolder + "/build/mmx node get netspace; cd " + thisFolder + "/mmx-daily-overview", function (err, stdout, stderr) {
+        exec("cd " + mmxFolder + "; source activate.sh; " + mmxFolder + "/build/mmx node get netspace; cd " + thisFolder + "/mmx-daily-overview", function (err, stdout, stderr) {
             if (err) {
                 console.error(err);
                 reject(err);
@@ -161,7 +161,7 @@ async function getNetSpace() {
 async function getFarmSpace() {
 
     return new Promise(function (resolve, reject) {
-        exec("cd " + mmxFolder + "; . ./activate.sh; " + mmxFolder + "/build/mmx farm info; cd " + thisFolder + "/mmx-daily-overview", function (err, stdout, stderr) {
+        exec("cd " + mmxFolder + "; source activate.sh; " + mmxFolder + "/build/mmx farm info; cd " + thisFolder + "/mmx-daily-overview", function (err, stdout, stderr) {
             if (err) {
                 console.error(err);
                 reject(err);
