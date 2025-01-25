@@ -167,7 +167,7 @@ async function getFarmSpace() {
                 reject(err);
             } else {
                 const result = stdout.split("\n");
-                let total = result[5].split(" ");
+                let total = result[6].split(" ");
                 resolve(total[2] * 1000000000000);
             }
         });
