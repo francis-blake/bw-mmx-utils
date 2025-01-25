@@ -152,7 +152,7 @@ async function getNetSpace() {
                 reject(err);
             } else {
                 const result = stdout.split("\n");
-                resolve(result[3]);
+                resolve(result[0]);
             }
         });
     });
@@ -167,7 +167,7 @@ async function getFarmSpace() {
                 reject(err);
             } else {
                 const result = stdout.split("\n");
-                let total = result[6].split(" ");
+                let total = result[3].split(" ");
                 resolve(total[2] * 1000000000000);
             }
         });
