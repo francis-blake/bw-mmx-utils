@@ -143,46 +143,54 @@ function parseLog(lf, before = false) {
     });
 }
 
-async function getNetSpace() {
+async function runInVenv(commands) {
+    const venvPath = 'activate.sh';
+
+    const command = `cd ${mmxFolder}; source ${venvPath} && ${commands.join(' && ')}`;
 
     return new Promise(function (resolve, reject) {
-        exec("cd " + mmxFolder + "; source ./activate.sh; /home/joao/mmx-node/build/mmx node get netspace; cd " + thisFolder + "/mmx-daily-overview", function (err, stdout, stderr) {
-            if (err) {
-                console.error(err);
-                reject(err);
-            } else {
-                const result = stdout.split("\n");
-                let netspace;
-                if (result[0].startsWith('NETWORK')) {
-                    netspace = result[1];
-                } else {
-                    netspace = result[2];
-                }
+        exec(command, { shell: '/bin/bash' }, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Execution error: ${error}`);
+                return;
+            }
 
-                resolve(netspace);
+            const result = stdout.split("\n");
+            resolve(result);
+
+            if (stderr) {
+                console.error('Errors:', stderr);
             }
         });
     });
 }
 
+async function getNetSpace() {
+
+    let netspace = await runInVenv(["mmx node get netspace"]);
+
+    let result;
+    if (netspace[0].startsWith('NETWORK')) {
+        result = netspace[1];
+    } else {
+        result = netspace[2];
+    }
+
+    return result;
+}
+
 async function getFarmSpace() {
 
-    return new Promise(function (resolve, reject) {
-        exec("cd " + mmxFolder + "; source ./activate.sh; /home/joao/mmx-node/build/mmx farm info; cd " + thisFolder + "/mmx-daily-overview", function (err, stdout, stderr) {
-            if (err) {
-                console.error(err);
-                reject(err);
-            } else {
-                const result = stdout.split("\n");
-                if (result[0].startsWith('NETWORK')) {
-                    let total = result[4].split(" ");
-                } else {
-                    let total = result[5].split(" ");
-                }
-                resolve(total[2] * 1000000000000);
-            }
-        });
-    });
+    let info = await runInVenv(["mmx farm info"]);
+
+    let total;
+    if (info[0].startsWith('NETWORK')) {
+        total = info[4].split(" ");
+    } else {
+        total = info[5].split(" ");
+    }
+
+    return total[2] * 1000000000000;
 }
 
 function createMessage() {
