@@ -101,6 +101,7 @@ let fileBeforeExists = fs.existsSync(mmx_log_folder + '/mmx_node_' + logDateBefo
 initialize();
 
 async function initialize() {
+    await initializeMMXvenv();
 
     if (fileExists) {
         if (fileBeforeExists) {
@@ -143,16 +144,31 @@ function parseLog(lf, before = false) {
     });
 }
 
-async function getNetSpace() {
+async function initializeMMXvenv() {
 
     return new Promise(function (resolve, reject) {
-        exec("cd " + mmxFolder + "; source activate.sh; " + mmxFolder + "/build/mmx node get netspace; cd " + thisFolder + "/mmx-daily-overview", function (err, stdout, stderr) {
+        exec("cd " + mmxFolder + "; source activate.sh; cd " + thisFolder + "/mmx-daily-overview", function (err, stdout, stderr) {
             if (err) {
                 console.error(err);
                 reject(err);
             } else {
                 const result = stdout.split("\n");
-                resolve(result[2]);
+                resolve("MMX initialized");
+            }
+        });
+    });
+}
+
+async function getNetSpace() {
+
+    return new Promise(function (resolve, reject) {
+        exec("mmx node get netspace", function (err, stdout, stderr) {
+            if (err) {
+                console.error(err);
+                reject(err);
+            } else {
+                const result = stdout.split("\n");
+                resolve(result[0]);
             }
         });
     });
@@ -161,13 +177,13 @@ async function getNetSpace() {
 async function getFarmSpace() {
 
     return new Promise(function (resolve, reject) {
-        exec("cd " + mmxFolder + "; source activate.sh; " + mmxFolder + "/build/mmx farm info; cd " + thisFolder + "/mmx-daily-overview", function (err, stdout, stderr) {
+        exec("mmx farm info", function (err, stdout, stderr) {
             if (err) {
                 console.error(err);
                 reject(err);
             } else {
                 const result = stdout.split("\n");
-                let total = result[5].split(" ");
+                let total = result[3].split(" ");
                 resolve(total[2] * 1000000000000);
             }
         });
